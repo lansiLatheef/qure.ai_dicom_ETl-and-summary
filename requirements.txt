@@ -1,0 +1,5 @@
+pydicom
+numpy
+matplotlib
+seaborn
+sqlite3
