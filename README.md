@@ -10,6 +10,7 @@ A modular pipeline to process medical imaging data (DICOM format) from the LIDC-
 5. Generate summary statistics and visualizations
 
 *Table Description:*
+
 Patients Table-
 
 This table contains patient-level metadata
@@ -32,5 +33,7 @@ Summary Statistics:
 - Total Slices: 10
 - Average Slices per Study: 1.00
 - Slice Thickness: Min = 1.25, Max = 2.50, Mean = 1.75
+
+To run the code : python pipeline.py
 
 
