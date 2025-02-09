@@ -97,8 +97,7 @@ def create_database(db_path):
             FOREIGN KEY (StudyInstanceUID) REFERENCES studies(StudyInstanceUID)
         )
     ''')
-    
-    # Create indexes for faster querying
+
     cursor.execute('CREATE INDEX IF NOT EXISTS idx_patient_id ON studies(PatientID)')
     cursor.execute('CREATE INDEX IF NOT EXISTS idx_study_uid ON series(StudyInstanceUID)')
     
@@ -109,8 +108,6 @@ def create_database(db_path):
 # 3.2 Populate the Schema
 def insert_metadata(conn, metadata):
     cursor = conn.cursor()
-    
-    # Start transaction
     try:
         for entry in metadata:
             # Insert into patients table
@@ -133,11 +130,11 @@ def insert_metadata(conn, metadata):
             ''', (entry['SeriesInstanceUID'], entry['StudyInstanceUID'], 
                   entry['SliceThickness'], str(entry['PixelSpacing']), entry['FilePath']))
         
-        # Commit the transaction
+        # Committing
         conn.commit()
     except Exception as e:
         logging.error(f"Error inserting metadata: {e}")
-        conn.rollback()  # Roll back transaction in case of failure
+        conn.rollback() 
 
 
 
@@ -190,8 +187,6 @@ def visualize_data(conn):
     # Fetch SliceThickness data
     cursor.execute("SELECT SliceThickness FROM series WHERE SliceThickness != 'Unknown'")
     slice_thickness = [float(row[0]) for row in cursor.fetchall() if row[0].replace('.', '', 1).isdigit()]
-
-    # Visualization
     if slice_thickness:
         sns.histplot(slice_thickness, kde=False, bins=10, color='blue')
         plt.title("Distribution of Slice Thickness")
